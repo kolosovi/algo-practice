@@ -1,82 +1,84 @@
 package word_ladder
 
 type solver struct {
-	nodes     map[int][]int
-	beginNode int
-	endNode   int
-}
-
-type Node struct {
-	Node  int
-	Depth int
+	beginWord          string
+	endWord            string
+	replacementToWords map[string][]string
+	wordToReplacements map[string][]string
 }
 
 func (s *solver) solve() int {
-	visited := map[int]struct{}{s.beginNode: {}}
-	queue := []Node{{Node: s.beginNode, Depth: 1}}
+	visited := map[string]struct{}{s.beginWord: {}}
+	depth := 1
+	queue := []string{s.beginWord}
 	for len(queue) > 0 {
-		node := queue[0]
-		queue = queue[1:]
-		visited[node.Node] = struct{}{}
-		if node.Node == s.endNode {
-			return node.Depth
-		}
-		for _, child := range s.nodes[node.Node] {
-			if _, ok := visited[child]; ok {
-				continue
+		queueSize := len(queue)
+		for ; queueSize > 0; queueSize-- {
+			word := queue[0]
+			queue = queue[1:]
+			visited[word] = struct{}{}
+			if word == s.endWord {
+				return depth
 			}
-			visited[child] = struct{}{}
-			queue = append(queue, Node{Node: child, Depth: node.Depth + 1})
+			children := s.children(word)
+			for _, child := range children {
+				if _, ok := visited[child]; ok {
+					continue
+				}
+				visited[child] = struct{}{}
+				queue = append(queue, child)
+			}
 		}
+		depth++
 	}
 	return 0
 }
 
-func newSolver(beginWord string, endWord string, words []string) *solver {
-	nodes := make(map[int][]int)
-	beginNode, endNode := -1, -1
-	for i := range words {
-		if words[i] == beginWord {
-			beginNode = i
-		}
-		if words[i] == endWord {
-			endNode = i
-		}
-		for j := i + 1; j < len(words); j++ {
-			if connected(words[i], words[j]) {
-				nodes[i] = append(nodes[i], j)
-				nodes[j] = append(nodes[j], i)
+func (s *solver) children(word string) []string {
+	var result []string
+	for _, replacement := range s.wordToReplacements[word] {
+		for _, child := range s.replacementToWords[replacement] {
+			if child == word {
+				continue
 			}
+			result = append(result, child)
 		}
 	}
-	if beginNode == -1 {
-		words = append(words, beginWord)
-		beginNode = len(words) - 1
-		for i := 0; i < beginNode; i++ {
-			if connected(beginWord, words[i]) {
-				nodes[beginNode] = append(nodes[beginNode], i)
-				nodes[i] = append(nodes[i], beginNode)
+	return result
+}
+
+func newSolver(beginWord string, endWord string, words []string) *solver {
+	replacementToWords := make(map[string][]string)
+	wordToReplacements := make(map[string][]string)
+	words = append(words, beginWord)
+	for i := range words {
+		replacements := make([]string, 0, len(words[i]))
+		template := []byte(words[i])
+		var prevChar byte
+		for i := range template {
+			if i > 0 {
+				template[i-1] = prevChar
 			}
+			prevChar, template[i] = template[i], '_'
+			replacements = append(replacements, string(template))
+		}
+		for _, replacement := range replacements {
+			wordToReplacements[words[i]] = append(
+				wordToReplacements[words[i]],
+				replacement,
+			)
+			replacementToWords[replacement] = append(
+				replacementToWords[replacement],
+				words[i],
+			)
 		}
 	}
 	return &solver{
-		nodes:     nodes,
-		beginNode: beginNode,
-		endNode:   endNode,
+		beginWord:          beginWord,
+		endWord:            endWord,
+		replacementToWords: replacementToWords,
+		wordToReplacements: wordToReplacements,
 	}
-}
-
-func connected(lhs, rhs string) bool {
-	var wordsDiffer bool
-	for j := range lhs {
-		if lhs[j] != rhs[j] {
-			if wordsDiffer {
-				return false
-			}
-			wordsDiffer = true
-		}
-	}
-	return wordsDiffer
 }
 
 func ladderLength(beginWord string, endWord string, wordList []string) int {

@@ -19,5 +19,5 @@ Meanwhile you can compile manually. The commands below are given for clang becau
 Compiling Hackerrank solutions (with clang):
 
 ```
-clang++ -I <path to repo> -o bin/hackerrank-<problem name> --std=c++11 hackerrank/<problem name>/cpp/main.cpp
+clang++ -I <path to repo> -o bin/hackerrank-<problem name> --std=c++11 problems/hackerrank/<problem name>/cpp/main.cpp
 ```

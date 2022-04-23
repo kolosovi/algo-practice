@@ -1,0 +1,12 @@
+Implement [std::unique_ptr](https://en.cppreference.com/w/cpp/memory/unique_ptr):
+
+- Is a parameterized type (with type parameter T)
+- Is movable
+- Is not copyable
+- Assignment deletes old managed pointer
+
+API:
+unique_ptr(T *ptr) constructs unique_ptr
+~unique_ptr() deletes unique_ptr and its managed object
+operator bool returns true if there's a managed object
+Get() returns managed pointer

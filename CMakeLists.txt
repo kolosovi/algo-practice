@@ -42,6 +42,21 @@ target_link_libraries(
   gtest_main
 )
 
+add_library(
+  myself-implement-spinlock-spinlock-lib
+  STATIC
+  problems/myself/implement-spinlock/cpp/spinlock.cpp
+)
+add_executable(
+  myself-implement-spinlock-test
+  problems/myself/implement-spinlock/cpp/spinlock_test.cpp
+)
+target_link_libraries(
+  myself-implement-spinlock-test
+  myself-implement-spinlock-spinlock-lib
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

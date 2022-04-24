@@ -1,0 +1,9 @@
+Implement a simple version of [std::shared_ptr](https://en.cppreference.com/w/cpp/memory/shared_ptr).
+
+- On copy or copy assignment it must destroy its pointee if this shared_ptr is the last one pointing at it
+- On move or move assignment: the same
+- On destructing it must destroy its pointee if this shared_ptr is the last one pointing at it
+- operator bool returns false if empty, true otherwise
+- `get` returns pointee
+- `use_count` returns # of shared_ptr objects that own the pointee
+- OK if not thread-safe

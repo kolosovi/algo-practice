@@ -57,6 +57,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-minimum-area-rectangle-test
+  problems/leetcode/minimum-area-rectangle/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-minimum-area-rectangle-test
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

@@ -1,0 +1,20 @@
+You are given a blank screen and a stream of operations:
+- Add (x, y): adds a point with coordinates (x, y) to the screen and returns
+    the bounding box of points after the operation. A point can be added
+    multiple times, this creates duplicate instances of a single point.
+- Remove (x, y): removes a point with coordinates (x, y) from the screen and
+    returns the bounding box of points after the operation. If there are several
+    points at this location, only one instance is removed. It is guaranteed that
+    Remove won't be called for a location that contains no points.
+
+Your task is to implement Add & Remove with reasonable efficiency, e.g. N^2
+where N is the total number of operations is NOT reasonable.
+
+Coordinates x and y are integers.
+
+Bounding box is a rectangle with its sides parallel to ordinate x and y axes.
+It includes the bounded points, e.g. a bounding box of a single point is a
+rectangle with all corners equal to that point.
+
+Bounding box is defined by the coordinates of its upper left and bottom right
+corners.

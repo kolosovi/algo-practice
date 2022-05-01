@@ -66,6 +66,20 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  myself-bounding-box-test
+  problems/myself/bounding-box/cpp/solution_test.cpp
+)
+target_link_libraries(
+  myself-bounding-box-test
+  gtest_main
+)
+
+add_executable(
+  myself-bounding-box-generate-permutation-tests
+  problems/myself/bounding-box/cpp/generate_permutation_tests.cpp
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

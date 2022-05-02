@@ -80,6 +80,15 @@ add_executable(
   problems/myself/bounding-box/cpp/generate_permutation_tests.cpp
 )
 
+add_executable(
+  leetcode-lru-cache-test
+  problems/leetcode/lru-cache/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-lru-cache-test
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

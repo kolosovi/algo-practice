@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 project(algo-practice)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fsanitize=undefined")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -86,6 +87,15 @@ add_executable(
 )
 target_link_libraries(
   leetcode-lru-cache-test
+  gtest_main
+)
+
+add_executable(
+  leetcode-most-stones-removed-with-same-row-or-column-test
+  problems/leetcode/most-stones-removed-with-same-row-or-column/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-most-stones-removed-with-same-row-or-column-test
   gtest_main
 )
 

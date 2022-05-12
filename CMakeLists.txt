@@ -108,6 +108,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-gas-station-test
+  problems/leetcode/gas-station/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-gas-station-test
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

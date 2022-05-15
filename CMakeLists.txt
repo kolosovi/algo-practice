@@ -117,6 +117,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-missing-ranges-test
+  problems/leetcode/missing-ranges/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-missing-ranges-test
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

@@ -135,6 +135,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-kth-largest-element-in-an-array-test
+  problems/leetcode/kth-largest-element-in-an-array/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-kth-largest-element-in-an-array-test
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

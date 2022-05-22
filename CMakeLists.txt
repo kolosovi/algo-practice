@@ -153,6 +153,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-minimum-cost-to-hire-k-workers-test
+  problems/leetcode/minimum-cost-to-hire-k-workers/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-minimum-cost-to-hire-k-workers-test
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

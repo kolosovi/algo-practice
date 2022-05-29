@@ -162,6 +162,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-maximum-product-of-word-lengths
+  problems/leetcode/maximum-product-of-word-lengths/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-maximum-product-of-word-lengths
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

@@ -171,6 +171,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-check-if-a-string-contains-all-binary-codes-of-size-k
+  problems/leetcode/check-if-a-string-contains-all-binary-codes-of-size-k/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-check-if-a-string-contains-all-binary-codes-of-size-k
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

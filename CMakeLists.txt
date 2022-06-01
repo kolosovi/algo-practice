@@ -180,6 +180,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-01-matrix
+  problems/leetcode/01-matrix/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-01-matrix
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

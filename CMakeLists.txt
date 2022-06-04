@@ -189,6 +189,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-3sum
+  problems/leetcode/3sum/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-3sum
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

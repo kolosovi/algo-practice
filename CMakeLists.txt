@@ -207,6 +207,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-clone-graph
+  problems/leetcode/clone-graph/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-clone-graph
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

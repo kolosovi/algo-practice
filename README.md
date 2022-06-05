@@ -4,20 +4,30 @@ Feel free to roast them or make suggestions via issues or any other way.
 
 This code is distributed under [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html).
 
+## Requirements
+
+- go 1.17
+- cmake >= 3.10
+
 ## Running Go tests
 
 ```
-$ go test ./...
+$ make go-test
 ```
 
-## Compiling C++ solutions
+## Running C++ tests
 
-Neither building C++ solutions nor testing them are not automated yet, but I will fix this soon.
-
-Meanwhile you can compile manually. The commands below are given for clang because it's the compiler I use, but adapting the commands to another compiler should not be too difficult.
-
-Compiling Hackerrank solutions (with clang):
+C++ tests use [GoogleTest](https://github.com/google/googletest) and can be built & run with the following command:
 
 ```
-clang++ -I <path to repo> -o bin/hackerrank-<problem name> --std=c++11 problems/hackerrank/<problem name>/cpp/main.cpp
+$ make cpp-test
 ```
+
+Building & running C++ tests relies on naming conventions:
+- a test executable is build for any file in `problems/<namespace>/<problem name>/cpp` directory whose name matches the `*_test.cpp` glob
+- all other `.cpp` files in the same directory excluding `main.cpp` and `solution.cpp` are built and linked with the test executable
+- files are expected to be named using `snake_case`
+
+This won't work with Hackerrank solutions as they are provided as a `main.cpp` file.
+
+Otherwise, adding tests for a new solution is a matter of adding a `problems/<namespace>/<problem name>/cpp` and writing a GoogleTest test suite in a file named `<whatever in snake_case>_test.cpp`.

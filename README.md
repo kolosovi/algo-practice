@@ -24,8 +24,8 @@ $ make cpp-test
 ```
 
 Building & running C++ tests relies on naming conventions:
-- a test executable is build for any file in `problems/<namespace>/<problem name>/cpp` directory whose name matches `*_test.cpp` glob
-- all other `.cpp` files in the same directory excluding `main.cpp` and `solution.cpp` are built and linked with the test executable.
+- a test executable is build for any file in `problems/<namespace>/<problem name>/cpp` directory whose name matches the `*_test.cpp` glob
+- all other `.cpp` files in the same directory excluding `main.cpp` and `solution.cpp` are built and linked with the test executable
 - files are expected to be named using `snake_case`
 
 This won't work with Hackerrank solutions as they are provided as a `main.cpp` file.

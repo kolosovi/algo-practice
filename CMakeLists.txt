@@ -15,225 +15,45 @@ include(GoogleTest)
 
 enable_testing()
 
-# How to automate:
-# for each directory problems/<problem set>/<problem name>/cpp:
-#   for each *.cpp file which is not *_test.cpp:
-#     add library
-#   for each *_test.cpp file:
-#     add executable
-#     link it with gtest_main and every library from the previous step
-#     call gtest_discover_tests
-# For now I do the same manually.
-
-add_executable(
-  myself-implement-unique-ptr-test
-  problems/myself/implement-unique-ptr/cpp/unique_ptr_test.cpp
-)
-target_link_libraries(
-  myself-implement-unique-ptr-test
-  gtest_main
-)
-
-add_executable(
-  myself-implement-shared-ptr-test
-  problems/myself/implement-shared-ptr/cpp/shared_ptr_test.cpp
-)
-target_link_libraries(
-  myself-implement-shared-ptr-test
-  gtest_main
-)
-
-add_library(
-  myself-implement-spinlock-spinlock-lib
-  STATIC
-  problems/myself/implement-spinlock/cpp/spinlock.cpp
-)
-add_executable(
-  myself-implement-spinlock-test
-  problems/myself/implement-spinlock/cpp/spinlock_test.cpp
-)
-target_link_libraries(
-  myself-implement-spinlock-test
-  myself-implement-spinlock-spinlock-lib
-  gtest_main
-)
-
-add_executable(
-  leetcode-minimum-area-rectangle-test
-  problems/leetcode/minimum-area-rectangle/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-minimum-area-rectangle-test
-  gtest_main
-)
-
-add_executable(
-  myself-bounding-box-test
-  problems/myself/bounding-box/cpp/solution_test.cpp
-)
-target_link_libraries(
-  myself-bounding-box-test
-  gtest_main
-)
-
-add_executable(
-  myself-bounding-box-generate-permutation-tests
-  problems/myself/bounding-box/cpp/generate_permutation_tests.cpp
-)
-
-add_executable(
-  leetcode-lru-cache-test
-  problems/leetcode/lru-cache/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-lru-cache-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-most-stones-removed-with-same-row-or-column-test
-  problems/leetcode/most-stones-removed-with-same-row-or-column/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-most-stones-removed-with-same-row-or-column-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-evaluate-division-test
-  problems/leetcode/evaluate-division/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-evaluate-division-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-gas-station-test
-  problems/leetcode/gas-station/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-gas-station-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-missing-ranges-test
-  problems/leetcode/missing-ranges/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-missing-ranges-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-plus-one-test
-  problems/leetcode/plus-one/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-plus-one-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-kth-largest-element-in-an-array-test
-  problems/leetcode/kth-largest-element-in-an-array/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-kth-largest-element-in-an-array-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-insert-delete-getrandom-o1-test
-  problems/leetcode/insert-delete-getrandom-o1/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-insert-delete-getrandom-o1-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-minimum-cost-to-hire-k-workers-test
-  problems/leetcode/minimum-cost-to-hire-k-workers/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-minimum-cost-to-hire-k-workers-test
-  gtest_main
-)
-
-add_executable(
-  leetcode-maximum-product-of-word-lengths
-  problems/leetcode/maximum-product-of-word-lengths/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-maximum-product-of-word-lengths
-  gtest_main
-)
-
-add_executable(
-  leetcode-check-if-a-string-contains-all-binary-codes-of-size-k
-  problems/leetcode/check-if-a-string-contains-all-binary-codes-of-size-k/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-check-if-a-string-contains-all-binary-codes-of-size-k
-  gtest_main
-)
-
-add_executable(
-  leetcode-01-matrix
-  problems/leetcode/01-matrix/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-01-matrix
-  gtest_main
-)
-
-add_executable(
-  leetcode-3sum
-  problems/leetcode/3sum/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-3sum
-  gtest_main
-)
-
-add_executable(
-  leetcode-binary-tree-level-order-traversal
-  problems/leetcode/binary-tree-level-order-traversal/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-binary-tree-level-order-traversal
-  gtest_main
-)
-
-add_executable(
-  leetcode-clone-graph
-  problems/leetcode/clone-graph/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-clone-graph
-  gtest_main
-)
-
-add_executable(
-  leetcode-evaluate-reverse-polish-notation
-  problems/leetcode/evaluate-reverse-polish-notation/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-evaluate-reverse-polish-notation
-  gtest_main
-)
-
-add_executable(
-  leetcode-course-schedule
-  problems/leetcode/course-schedule/cpp/solution_test.cpp
-)
-target_link_libraries(
-  leetcode-course-schedule
-  gtest_main
-)
-
-include(GoogleTest)
-gtest_discover_tests(myself-implement-unique-ptr-test)
-gtest_discover_tests(myself-implement-shared-ptr-test)
+set(problems_root "${CMAKE_SOURCE_DIR}/problems/")
+file(GLOB problem_dirs ${problems_root}*/*/cpp)
+foreach(a_problem_dir ${problem_dirs})
+    file(GLOB cpp_files ${a_problem_dir}/*.cpp)
+    set(library_targets "")
+    foreach(a_library_file ${cpp_files})
+        if(${a_library_file} MATCHES "_test.cpp$")
+            continue()
+        endif()
+        if(${a_library_file} MATCHES "main.cpp$")
+            continue()
+        endif()
+        if(${a_library_file} MATCHES "/solution.cpp$")
+            continue()
+        endif()
+        set(library_target ${a_library_file})
+        string(REPLACE "${problems_root}" "" library_target "${library_target}")
+        string(REPLACE "/cpp/" "-" library_target "${library_target}")
+        string(REPLACE ".cpp" "-lib" library_target "${library_target}")
+        string(REPLACE "/" "-" library_target "${library_target}")
+        string(REPLACE "_" "-" library_target "${library_target}")
+        add_library(${library_target} STATIC ${a_library_file})
+        list(APPEND library_targets ${library_target})
+    endforeach(a_library_file ${cpp_files})
+    foreach(a_test_file ${cpp_files})
+        if(NOT ${a_test_file} MATCHES "_test.cpp$")
+            continue()
+        endif()
+        set(test_target ${a_test_file})
+        string(REPLACE "${problems_root}" "" test_target "${test_target}")
+        string(REPLACE "/cpp/" "-" test_target "${test_target}")
+        string(REPLACE ".cpp" "" test_target "${test_target}")
+        string(REPLACE "/" "-" test_target "${test_target}")
+        string(REPLACE "_" "-" test_target "${test_target}")
+        add_executable(${test_target} ${a_test_file})
+        target_link_libraries(${test_target} gtest_main)
+        foreach(a_library_target ${library_targets})
+            target_link_libraries(${test_target} ${a_library_target})
+        endforeach(a_library_target ${library_targets})
+        gtest_discover_tests(${test_target})
+    endforeach(a_test_file ${cpp_files})
+endforeach(a_problem_dir ${problem_dirs})

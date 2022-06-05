@@ -225,6 +225,15 @@ target_link_libraries(
   gtest_main
 )
 
+add_executable(
+  leetcode-course-schedule
+  problems/leetcode/course-schedule/cpp/solution_test.cpp
+)
+target_link_libraries(
+  leetcode-course-schedule
+  gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(myself-implement-unique-ptr-test)
 gtest_discover_tests(myself-implement-shared-ptr-test)

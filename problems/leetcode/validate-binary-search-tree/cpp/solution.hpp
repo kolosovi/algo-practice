@@ -15,21 +15,29 @@ struct TreeNode {
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
-        return isValidBST(root, std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
-    }
-
-private:
-    bool isValidBST(TreeNode *node, int64_t min, int64_t max) {
-        if (node == nullptr) {
-            return true;
+        TreeNode *prev = nullptr, *node = root;
+        std::vector<TreeNode*> stack;
+        while (true) {
+            if (node->left != nullptr) {
+                stack.emplace_back(node);
+                node = node->left;
+                continue;
+            }
+            if (prev != nullptr && prev->val >= node->val) {
+                return false;
+            }
+            prev = node;
+            if (node->right != nullptr) {
+                node = node->right;
+                continue;
+            }
+            if (stack.size() == 0) {
+                return true;
+            }
+            node = stack.back();
+            node->left = nullptr;
+            stack.pop_back();
         }
-        if (node->val < min) {
-            return false;
-        }
-        if (node->val > max) {
-            return false;
-        }
-        int64_t new_max = node->val, new_min = node->val;
-        return isValidBST(node->left, min, new_max-1) && isValidBST(node->right, new_min+1, max);
+        return true;
     }
 };

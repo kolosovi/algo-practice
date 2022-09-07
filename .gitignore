@@ -2,3 +2,4 @@ problems/hidden
 a.out
 bin
 build
+.DS_Store

@@ -4,6 +4,12 @@
 #include <numeric>
 #include <algorithm>
 
+struct Compare {
+    bool operator()(const std::pair<int, int> &lhs, const std::pair<int, int> &rhs) const {
+        return lhs.first > rhs.first;
+    }
+};
+
 class Solution {
 public:
     int jobScheduling(std::vector<int>& startTime, std::vector<int>& endTime, std::vector<int>& profit) {
@@ -19,31 +25,22 @@ public:
                 return startTime[lhs] < startTime[rhs];
             }
         );
-        std::vector<int> mem(jobs.size(), 0);
-        return solve(mem, jobs, startTime, endTime, profit, 0);
-    }
-
-private:
-    int solve(std::vector<int> &mem, const std::vector<int> &jobs, const std::vector<int> &startTime, const std::vector<int> &endTime, const std::vector<int> &profit, int i) {
-        if (i >= jobs.size()) {
-            return 0;
-        }
-        if (mem[i] > 0) {
-            return mem[i];
-        }
-        int result = solve(mem, jobs, startTime, endTime, profit, i + 1);
-        auto first_non_overlapping_it = std::lower_bound(
-            jobs.begin(),
-            jobs.end(),
-            endTime[jobs[i]],
-            [&startTime](const int &job, const int &target_time) -> bool {
-                return startTime[job] < target_time;
+        Compare cmp;
+        std::vector<std::pair<int, int>> queue;
+        std::make_heap(queue.begin(), queue.end(), cmp);
+        int max_profit = 0;
+        for (auto job : jobs) {
+            while (queue.size() > 0 && queue.front().first <= startTime[job]) {
+                max_profit = std::max(max_profit, queue.front().second);
+                std::pop_heap(queue.begin(), queue.end(), cmp);
+                queue.pop_back();
             }
-        );
-        int k = first_non_overlapping_it - jobs.begin();
-        int next_profit = solve(mem, jobs, startTime, endTime, profit, k);
-        result = std::max(result, profit[jobs[i]] + next_profit);
-        mem[i] = result;
-        return result;
+            queue.emplace_back(endTime[job], profit[job] + max_profit);
+            std::push_heap(queue.begin(), queue.end(), cmp);
+        }
+        for (const auto &[_, a_profit] : queue) {
+            max_profit = std::max(max_profit, a_profit);
+        }
+        return max_profit;
     }
 };

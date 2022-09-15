@@ -3,15 +3,15 @@
 #include <atomic>
 
 class Spinlock {
-public:
-    Spinlock();
+ public:
+  Spinlock();
 
-    void lock();
+  void lock();
 
-    void unlock();
+  void unlock();
 
-    bool try_lock();
+  bool try_lock();
 
-private:
-    std::atomic<bool> is_locked_;
+ private:
+  std::atomic<bool> is_locked_;
 };

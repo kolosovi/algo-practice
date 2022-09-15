@@ -13,51 +13,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void quickSortIter(std::vector<int> &arr, std::vector<int> &tmp, int begin, int end) {
-    if (begin >= end) {
-        return;
+void quickSortIter(std::vector<int> &arr, std::vector<int> &tmp, int begin,
+                   int end) {
+  if (begin >= end) {
+    return;
+  }
+  int pivot = begin, l = begin, r = end;
+  for (int i = pivot + 1; i <= end; i++) {
+    if (arr[i] < arr[pivot]) {
+      tmp[l++] = arr[i];
     }
-    int pivot = begin, l = begin, r = end;
-    for (int i = pivot+1; i <= end; i++) {
-        if (arr[i] < arr[pivot]) {
-            tmp[l++] = arr[i];
-        }
-        if (arr[i] > arr[pivot]) {
-            tmp[r--] = arr[i];
-        }
+    if (arr[i] > arr[pivot]) {
+      tmp[r--] = arr[i];
     }
-    tmp[l] = arr[pivot];
-    for (int last = end; r < last;) {
-        std::swap(tmp[++r], tmp[last--]);
-    }
-    for (int i = begin; i <= end; i++) {
-        arr[i] = tmp[i];
-    }
-    quickSortIter(arr, tmp, begin, l-1);
-    quickSortIter(arr, tmp, l+1, end);
-    std::cout << arr[begin];
-    for (int i = begin+1; i <= end; i++) {
-        std::cout << " " << arr[i];
-    }
-    std::cout << "\n";
+  }
+  tmp[l] = arr[pivot];
+  for (int last = end; r < last;) {
+    std::swap(tmp[++r], tmp[last--]);
+  }
+  for (int i = begin; i <= end; i++) {
+    arr[i] = tmp[i];
+  }
+  quickSortIter(arr, tmp, begin, l - 1);
+  quickSortIter(arr, tmp, l + 1, end);
+  std::cout << arr[begin];
+  for (int i = begin + 1; i <= end; i++) {
+    std::cout << " " << arr[i];
+  }
+  std::cout << "\n";
 }
 
-void quickSort(vector <int> &arr) {
-    std::vector<int> tmp(arr.size());
-    quickSortIter(arr, tmp, 0, arr.size()-1);
+void quickSort(vector<int> &arr) {
+  std::vector<int> tmp(arr.size());
+  quickSortIter(arr, tmp, 0, arr.size() - 1);
 }
 
-int main()
-{
-    int n;
-    cin >> n;
+int main() {
+  int n;
+  cin >> n;
 
-    vector <int> arr(n);
-    for(int i = 0; i < (int)n; ++i) {
-        cin >> arr[i];
-    }
+  vector<int> arr(n);
+  for (int i = 0; i < (int)n; ++i) {
+    cin >> arr[i];
+  }
 
-    quickSort(arr);
+  quickSort(arr);
 
-    return 0;
+  return 0;
 }

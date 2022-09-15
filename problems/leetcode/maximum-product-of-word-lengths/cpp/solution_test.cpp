@@ -6,7 +6,7 @@
 #include <string>
 
 TEST(MaximumProductOfWordLengthsTest, 1) {
-    Solution solution;
-    std::vector<std::string> words{"abcw", "baz", "foo", "bar", "xtfn", "abcdef"};
-    EXPECT_EQ(solution.maxProduct(words), 16);
+  Solution solution;
+  std::vector<std::string> words{"abcw", "baz", "foo", "bar", "xtfn", "abcdef"};
+  EXPECT_EQ(solution.maxProduct(words), 16);
 }

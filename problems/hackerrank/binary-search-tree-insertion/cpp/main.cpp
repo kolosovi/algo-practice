@@ -15,90 +15,85 @@
 using namespace std;
 
 class Node {
-    public:
-        int data;
-        Node *left;
-        Node *right;
-        Node(int d) {
-            data = d;
-            left = NULL;
-            right = NULL;
-        }
+ public:
+  int data;
+  Node *left;
+  Node *right;
+  Node(int d) {
+    data = d;
+    left = NULL;
+    right = NULL;
+  }
 };
 
 class Solution {
-    public:
-  	
-  	void preOrder(Node *root) {
-		
-      	if( root == NULL )
-          	return;
-      
-      	std::cout << root->data << " ";
-      	
-      	preOrder(root->left);
-      	preOrder(root->right);
+ public:
+  void preOrder(Node *root) {
+    if (root == NULL) return;
+
+    std::cout << root->data << " ";
+
+    preOrder(root->left);
+    preOrder(root->right);
+  }
+
+  /*
+  Node is defined as
+
+  class Node {
+      public:
+          int data;
+          Node *left;
+          Node *right;
+          Node(int d) {
+              data = d;
+              left = NULL;
+              right = NULL;
+          }
+  };
+
+  */
+
+  Node *insert(Node *root, int data) {
+    auto *node = new Node(data);
+    if (root == nullptr) {
+      return node;
     }
-
-/*
-Node is defined as 
-
-class Node {
-    public:
-        int data;
-        Node *left;
-        Node *right;
-        Node(int d) {
-            data = d;
-            left = NULL;
-            right = NULL;
+    Node *cur = root;
+    while (true) {
+      if (data < cur->data) {
+        if (cur->left == nullptr) {
+          cur->left = node;
+          break;
         }
-};
-
-*/
-
-    Node * insert(Node * root, int data) {
-        auto *node = new Node(data);
-        if (root == nullptr) {
-            return node;
+        cur = cur->left;
+      } else {
+        if (cur->right == nullptr) {
+          cur->right = node;
+          break;
         }
-        Node *cur = root;
-        while (true) {
-            if (data < cur->data) {
-                if (cur->left == nullptr) {
-                    cur->left = node;
-                    break;
-                }
-                cur = cur->left;
-            } else {
-                if (cur->right == nullptr) {
-                    cur->right = node;
-                    break;
-                }
-                cur = cur->right;
-            }
-        }
-        return root;
+        cur = cur->right;
+      }
     }
-
+    return root;
+  }
 };
 
 int main() {
-  
-    Solution myTree;
-    Node* root = NULL;
-    
-    int t;
-    int data;
+  Solution myTree;
+  Node *root = NULL;
 
-    std::cin >> t;
+  int t;
+  int data;
 
-    while(t-- > 0) {
-        std::cin >> data;
-        root = myTree.insert(root, data);
-    }
-  	
-    myTree.preOrder(root);
-  
-    return 0;
+  std::cin >> t;
+
+  while (t-- > 0) {
+    std::cin >> data;
+    root = myTree.insert(root, data);
+  }
+
+  myTree.preOrder(root);
+
+  return 0;
 }

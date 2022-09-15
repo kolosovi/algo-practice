@@ -10,6 +10,10 @@ cpp-build: cpp-cmake
 cpp-test: cpp-build
 	ctest --test-dir build
 
+.PHONY: cpp-format
+cpp-format:
+	./scripts/cpp-format.sh
+
 .PHONY: go-test
 go-test:
 	go test -v ./...

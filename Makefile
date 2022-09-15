@@ -17,3 +17,7 @@ cpp-format:
 .PHONY: go-test
 go-test:
 	go test -v ./...
+
+.PHONY: install-git-hooks
+install-git-hooks:
+	ln -Fvs ../../scripts/pre-commit-hook.sh .git/hooks/pre-commit

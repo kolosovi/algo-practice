@@ -1,0 +1,16 @@
+I have an array `window` that holds nums sorted DESC. I have its start so I can remove the biggest element in O(1) time and I also can remove smaller elements quickly (i.e. remove M smallest elements).
+
+no, this is bullshit
+
+for i = 0; i < nums.size(); i++:
+    if window size >= k:  # this means that we must remove the OLDEST element
+        increment window start - but this doesn't work. It works if window has k elements.
+        pop off window while elements are smaller than us
+        push the new element
+    else:  # this means that we don't have to remove the oldest element
+        pop off window while elements are smaller than us
+        push the new element
+
+MAYBE: really a deque, AND we store INDEXES rather than nums. So an index gives us the "depth" of the number and its value.
+
+We see if the first element is "too deep". If so we just remove it. We then remove irrelevant numbers from end and store ours. And we repeat this.

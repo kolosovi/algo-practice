@@ -10,6 +10,8 @@ static constexpr char kNine = '9';
 
 inline int ToBox(int row, int col) { return (row - (row % 3)) + (col / 3); }
 
+inline int ToIndex(char value) { return value - kOne; }
+
 inline std::pair<int, int> Next(int row, int col) {
   if (col < kSize - 1) {
     return {row, col + 1};
@@ -18,9 +20,9 @@ inline std::pair<int, int> Next(int row, int col) {
 }
 
 struct State {
-  std::array<std::unordered_set<char>, kSize> row_options;
-  std::array<std::unordered_set<char>, kSize> col_options;
-  std::array<std::unordered_set<char>, kSize> box_options;
+  std::array<std::array<bool, kSize>, kSize> row_options;
+  std::array<std::array<bool, kSize>, kSize> col_options;
+  std::array<std::array<bool, kSize>, kSize> box_options;
 };
 
 class Solution {
@@ -29,9 +31,9 @@ class Solution {
     State state;
     for (int i = 0; i < kSize; i++) {
       for (char num = kOne; num <= kNine; num++) {
-        state.row_options[i].insert(num);
-        state.col_options[i].insert(num);
-        state.box_options[i].insert(num);
+        state.row_options[i][ToIndex(num)] = true;
+        state.col_options[i][ToIndex(num)] = true;
+        state.box_options[i][ToIndex(num)] = true;
       }
     }
     for (int row = 0; row < kSize; row++) {
@@ -39,9 +41,9 @@ class Solution {
         if (board[row][col] == kEmpty) {
           continue;
         }
-        state.row_options[row].erase(board[row][col]);
-        state.col_options[col].erase(board[row][col]);
-        state.box_options[ToBox(row, col)].erase(board[row][col]);
+        state.row_options[row][ToIndex(board[row][col])] = false;
+        state.col_options[col][ToIndex(board[row][col])] = false;
+        state.box_options[ToBox(row, col)][ToIndex(board[row][col])] = false;
       }
     }
     Solve(board, state, 0, 0);
@@ -77,13 +79,13 @@ class Solution {
 
   bool IsAvailable(std::vector<std::vector<char>> &board, State &state, int row,
                    int col, char num) {
-    if (!state.row_options[row].count(num)) {
+    if (!state.row_options[row][ToIndex(num)]) {
       return false;
     }
-    if (!state.col_options[col].count(num)) {
+    if (!state.col_options[col][ToIndex(num)]) {
       return false;
     }
-    if (!state.box_options[ToBox(row, col)].count(num)) {
+    if (!state.box_options[ToBox(row, col)][ToIndex(num)]) {
       return false;
     }
     return true;
@@ -92,16 +94,16 @@ class Solution {
   void Put(std::vector<std::vector<char>> &board, State &state, int row,
            int col, char value) {
     board[row][col] = value;
-    state.row_options[row].erase(board[row][col]);
-    state.col_options[col].erase(board[row][col]);
-    state.box_options[ToBox(row, col)].erase(board[row][col]);
+    state.row_options[row][ToIndex(board[row][col])] = false;
+    state.col_options[col][ToIndex(board[row][col])] = false;
+    state.box_options[ToBox(row, col)][ToIndex(board[row][col])] = false;
   }
 
   void Erase(std::vector<std::vector<char>> &board, State &state, int row,
              int col) {
-    state.row_options[row].insert(board[row][col]);
-    state.col_options[col].insert(board[row][col]);
-    state.box_options[ToBox(row, col)].insert(board[row][col]);
+    state.row_options[row][ToIndex(board[row][col])] = true;
+    state.col_options[col][ToIndex(board[row][col])] = true;
+    state.box_options[ToBox(row, col)][ToIndex(board[row][col])] = true;
     board[row][col] = kEmpty;
   }
 };

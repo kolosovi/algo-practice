@@ -15,6 +15,12 @@ include(GoogleTest)
 
 enable_testing()
 
+include_directories(lib/include)
+
+add_library(testutil STATIC lib/src/testutil/file.cpp)
+
+add_executable(gen-cses-main "${CMAKE_SOURCE_DIR}/lib/src/gen_cses_main.cpp")
+
 set(problems_root "${CMAKE_SOURCE_DIR}/problems/")
 file(GLOB problem_dirs ${problems_root}*/*/cpp)
 foreach(a_problem_dir ${problem_dirs})
@@ -50,10 +56,21 @@ foreach(a_problem_dir ${problem_dirs})
         string(REPLACE "/" "-" test_target "${test_target}")
         string(REPLACE "_" "-" test_target "${test_target}")
         add_executable(${test_target} ${a_test_file})
-        target_link_libraries(${test_target} gmock gmock_main)
+        target_link_libraries(${test_target} testutil gmock gmock_main)
         foreach(a_library_target ${library_targets})
             target_link_libraries(${test_target} ${a_library_target})
         endforeach(a_library_target ${library_targets})
         gtest_discover_tests(${test_target})
+        # For problems from Antti Laaksonens book also generate main file
+        # XXX: this assumes that solution is contained in a "solution.hpp" file
+        # which is not enforced anywhere.
+        if(${a_test_file} MATCHES "/laaks/*/cpp")
+            add_custom_command(
+              OUTPUT ${a_problem_dir}/main.cpp
+              DEPENDS ${test_target} gen-cses-main
+              COMMAND ${CMAKE_BINARY_DIR}/gen-cses-main ${a_problem_dir}/solution.hpp > ${a_problem_dir}/main.cpp
+            )
+            add_executable(${test_target}-cses-main ${a_problem_dir}/main.cpp)
+        endif()
     endforeach(a_test_file ${cpp_files})
 endforeach(a_problem_dir ${problem_dirs})

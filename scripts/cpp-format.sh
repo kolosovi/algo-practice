@@ -10,7 +10,7 @@ do
     esac
 done
 
-for name in `find -E problems -regex '.*\.hpp|.*\.cpp'`
+for name in `find -E problems lib -regex '.*\.hpp|.*\.cpp'`
 do
     if [[ $IS_DRY_RUN -eq 1 ]]
     then

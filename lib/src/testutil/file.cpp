@@ -31,15 +31,24 @@ std::filesystem::path DataFilePath(const std::string &source_location,
 
 }  // namespace
 
-bool testutil::FileBasedTest(testutil::Solution solution,
-                             const std::string &source_location,
-                             const std::string input_filename,
-                             const std::string &expected_output_filename) {
+std::string testutil::FileBasedTest(
+    testutil::Solution solution, const std::string &source_location,
+    const std::string input_filename,
+    const std::string &expected_output_filename) {
   std::ifstream input_stream(DataFilePath(source_location, input_filename));
   std::ifstream expected_stream(
       DataFilePath(source_location, expected_output_filename));
   auto expected = ReadAll(expected_stream);
   std::ostringstream output_stream;
   solution(input_stream, output_stream);
-  return output_stream.str() == expected;
+  auto output = output_stream.str();
+  if (output == expected) {
+    return {};
+  }
+  std::stringstream diff;
+  diff << "expected:\n";
+  diff << expected << '\n';
+  diff << "actual:\n";
+  diff << output;
+  return diff.str();
 }

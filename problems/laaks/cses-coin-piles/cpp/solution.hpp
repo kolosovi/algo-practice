@@ -13,13 +13,7 @@ void Solve(std::istream &in, std::ostream &out) {
     if (b > a) {
       std::swap(a, b);
     }
-    auto diff = a - b;
-    a -= 2 * diff;
-    b -= diff;
-    if (a >= 0 && a % 3 == 0) {
-      out << "YES\n";
-      continue;
-    }
-    out << "NO\n";
+    a -= 2 * (a - b);
+    out << ((a >= 0 && a % 3 == 0) ? "YES" : "NO") << '\n';
   }
 }

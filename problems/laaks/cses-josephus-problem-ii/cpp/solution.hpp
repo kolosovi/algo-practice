@@ -33,6 +33,8 @@ class Set {
 
     bool isRed() const { return color_ == RED; }
 
+    bool isBlack() const { return color_ == BLACK; }
+
     Node *parent_;
     Node *left_;
     Node *right_;
@@ -42,6 +44,11 @@ class Set {
   };
 
   Set() : cmp_(), nil_(new Node()), root_(nil_) {}
+
+  ~Set() {
+    // well....
+    // I will need to use valgrind?
+  }
 
   void Insert(K key) {
     Node *parent = nil_, *place = root_;
@@ -81,6 +88,22 @@ class Set {
     } else {
       odd_parent = min(node->right_);
       odd_parent_color = odd_parent->color_;
+      odd = odd_parent->right_;
+      if (odd_parent != node->right_) {
+        transplant(odd_parent, odd);
+        odd_parent->right_ = node->right_;
+        node->right_->parent_ = odd_parent;
+      } else {
+        odd->parent_ = odd_parent;
+      }
+      transplant(node, odd_parent);
+      odd_parent->left_ = node->left_;
+      node->left_->parent_ = odd_parent;
+      odd_parent->color_ = node->color_;
+    }
+    delete node;
+    if (odd_parent_color == BLACK) {
+      deleteFixup(odd);
     }
   }
 
@@ -177,9 +200,78 @@ class Set {
     node->size_ = node->left_->size_ + node->right_->size_ + 1;
   }
 
-  void transplant(Node *from, Node *to) {}
+  void transplant(Node *from, Node *to) {
+    to->parent_ = from->parent_;
+    if (to->parent_ == nil_) {
+      root_ == to;
+    } else if (from == from->parent_->left_) {
+      to->parent_->left_ = to;
+    } else {
+      to->parent_->right_ = to;
+    }
+  }
 
-  Node *min(Node *node) { return node; }
+  Node *min(Node *node) {
+    while (node->left_ != nil_) {
+      node = node->left_;
+    }
+    return node;
+  }
+
+  void deleteFixup(Node *odd) {
+    while (odd != root_ && odd->isBlack()) {
+      if (odd == odd->parent_->left_) {
+        auto *brother = odd->parent_->right_;
+        if (brother->isRed()) {
+          brother->color_ = BLACK;
+          odd->parent_->color_ = RED;
+          leftRotate(odd->parent_);
+          brother = odd->parent_->right_;
+        }
+        if (brother->left_->isBlack() && brother->right_->isBlack()) {
+          brother->color_ = RED;
+          odd = odd->parent_;
+          continue;
+        }
+        if (brother->right_->isBlack()) {
+          brother->color_ = RED;
+          brother->left_->color = BLACK;
+          rightRotate(brother);
+          brother = odd->parent_->right_;
+        }
+        brother->right_->color_ = BLACK;
+        brother->color_ = odd->parent_->color_;
+        odd->parent_->color_ = BLACK;
+        leftRotate(odd->parent_);
+        odd = root_;
+      } else {
+        auto *brother = odd->parent_->left_;
+        if (brother->isRed()) {
+          brother->color_ = BLACK;
+          odd->parent_->color_ = RED;
+          rightRotate(odd->parent_);
+          brother = odd->parent_->left_;
+        }
+        if (brother->left_->isBlack() && brother->right_->isBlack()) {
+          brother->color_ = RED;
+          odd = odd->parent_;
+          continue;
+        }
+        if (brother->left_->isBlack()) {
+          brother->color_ = RED;
+          brother->right_->color = BLACK;
+          leftRotate(brother);
+          brother = odd->parent_->left_;
+        }
+        brother->left_->color_ = BLACK;
+        brother->color_ = odd->parent_->color_;
+        odd->parent_->color_ = BLACK;
+        rightRotate(odd->parent_);
+        odd = root_;
+      }
+    }
+    odd->color_ = BLACK;
+  }
 };
 
 void Solve(std::istream &in, std::ostream &out) {

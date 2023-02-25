@@ -45,10 +45,7 @@ class Set {
 
   Set() : cmp_(), nil_(new Node()), root_(nil_) {}
 
-  ~Set() {
-    // well....
-    // I will need to use valgrind?
-  }
+  ~Set() {}
 
   void Insert(K key) {
     Node *parent = nil_, *place = root_;
@@ -58,7 +55,7 @@ class Set {
       if (cmp_(key, place->key_)) {
         place = place->left_;
       } else if (cmp_(place->key_, key)) {
-        place = place->right;
+        place = place->right_;
       } else {
         return;
       }
@@ -74,7 +71,22 @@ class Set {
     insertFixup(node);
   }
 
-  Node *Select(int offset) { return nullptr; }
+  Node *Select(int offset) {
+    if (root_ == nil_ || offset >= Size() || offset < 0) {
+      return nullptr;
+    }
+    int acc = 0;
+    Node *cur = root_;
+    while (acc + cur->left_->size_ != offset) {
+      if (offset < acc + cur->left_->size_) {
+        cur = cur->left_;
+      } else {
+        acc += cur->left_->size_ + 1;
+        cur = cur->right_;
+      }
+    }
+    return cur;
+  }
 
   void Delete(Node *node) {
     Node *odd = nil_, *odd_parent = node;
@@ -100,8 +112,13 @@ class Set {
       odd_parent->left_ = node->left_;
       node->left_->parent_ = odd_parent;
       odd_parent->color_ = node->color_;
+      odd_parent->size_ = node->size_;
     }
     delete node;
+    for (auto *parent = odd->parent_; parent != nil_;
+         parent = parent->parent_) {
+      parent->size_--;
+    }
     if (odd_parent_color == BLACK) {
       deleteFixup(odd);
     }
@@ -161,7 +178,7 @@ class Set {
   }
 
   void leftRotate(Node *node) {
-    auto *replacement = node->right;
+    auto *replacement = node->right_;
     replacement->parent_ = node->parent_;
     if (node->parent_ == nil_) {
       root_ = replacement;
@@ -203,7 +220,7 @@ class Set {
   void transplant(Node *from, Node *to) {
     to->parent_ = from->parent_;
     if (to->parent_ == nil_) {
-      root_ == to;
+      root_ = to;
     } else if (from == from->parent_->left_) {
       to->parent_->left_ = to;
     } else {
@@ -235,7 +252,7 @@ class Set {
         }
         if (brother->right_->isBlack()) {
           brother->color_ = RED;
-          brother->left_->color = BLACK;
+          brother->left_->color_ = BLACK;
           rightRotate(brother);
           brother = odd->parent_->right_;
         }
@@ -259,7 +276,7 @@ class Set {
         }
         if (brother->left_->isBlack()) {
           brother->color_ = RED;
-          brother->right_->color = BLACK;
+          brother->right_->color_ = BLACK;
           leftRotate(brother);
           brother = odd->parent_->left_;
         }
@@ -289,6 +306,9 @@ void Solve(std::istream &in, std::ostream &out) {
     }
     out << it->Key();
     set.Delete(it);
+    if (set.Size() == 0) {
+      break;
+    }
     offset = (offset + k) % set.Size();
   }
   out << '\n';

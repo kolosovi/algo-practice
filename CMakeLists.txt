@@ -21,6 +21,8 @@ add_library(testutil STATIC lib/src/testutil/file.cpp)
 
 add_executable(gen-cses-main "${CMAKE_SOURCE_DIR}/lib/src/gen_cses_main.cpp")
 
+add_executable(kebab "${CMAKE_SOURCE_DIR}/lib/src/kebab.cpp")
+
 set(problems_root "${CMAKE_SOURCE_DIR}/problems/")
 file(GLOB problem_dirs ${problems_root}*/*/cpp)
 foreach(a_problem_dir ${problem_dirs})

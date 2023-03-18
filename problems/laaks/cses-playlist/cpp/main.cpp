@@ -5,28 +5,24 @@
 #include <algorithm>
 #include <istream>
 #include <ostream>
-#include <unordered_set>
 #include <vector>
 
 void Solve(std::istream &in, std::ostream &out) {
   // start is included, end is excluded.
-  int n, max = 0, start = 0, end = 0;
+  int n, max = 0, start = 0, end = 0, max_song = 0;
   in >> n;
   std::vector<int> songs(n, 0);
-  std::unordered_set<int> unique_songs;
   for (int i = 0; i < n; i++) {
     in >> songs[i];
+    max_song = std::max(max_song, songs[i]);
   }
-  while (end <= n) {
+  std::vector<bool> unique_songs(max_song + 1, false);
+  while (end < n) {
+    while (unique_songs[songs[end]]) {
+      unique_songs[songs[start++]] = false;
+    }
+    unique_songs[songs[end++]] = true;
     max = std::max(max, end - start);
-    if (end == n) {
-      break;
-    }
-    if (unique_songs.count(songs[end]) > 0) {
-      unique_songs.erase(songs[start++]);
-      continue;
-    }
-    unique_songs.insert(songs[end++]);
   }
   out << max << '\n';
 }

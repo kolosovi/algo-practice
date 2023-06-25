@@ -1,29 +1,16 @@
 class Solution {
  public:
-  /*
-  | A | > |   | B |
-  |   |   |   | v |
-  | ^ |   |   |   |
-  | D |   | < | C |
-  */
   void rotate(std::vector<std::vector<int>>& matrix) {
     int n = matrix.size();
-    int first = 0, last = n - 1;
-    while (first < last) {
-      int A = first, B = first, C = last, D = last;
-      for (int i = 0; i < last - first; i++) {
-        auto dummy = matrix[first][A];
-        matrix[first][A] = matrix[D][first];
-        matrix[D][first] = matrix[last][C];
-        matrix[last][C] = matrix[B][last];
-        matrix[B][last] = dummy;
-        A++;
-        B++;
-        C--;
-        D--;
+    for (int diagonal = 0; diagonal < n; diagonal++) {
+      for (int i = diagonal + 1; i < n; i++) {
+        std::swap(matrix[i][diagonal], matrix[diagonal][i]);
       }
-      first++;
-      last--;
+    }
+    for (int row = 0; row < n; row++) {
+      for (int col = 0; col < n / 2; col++) {
+        std::swap(matrix[row][col], matrix[row][n - col - 1]);
+      }
     }
   }
 };

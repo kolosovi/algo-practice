@@ -63,11 +63,12 @@ foreach(a_problem_dir ${problem_dirs})
             target_link_libraries(${test_target} ${a_library_target})
         endforeach(a_library_target ${library_targets})
         gtest_discover_tests(${test_target})
-        # For problems from Antti Laaksonens book also generate main file
+        # For judges that use stdin to pass inputs also generate main file
         # XXX: this assumes that solution is contained in a "solution.hpp" file
         # which is not enforced anywhere.
         if(${a_test_file} MATCHES "/laaks/.*/cpp"
-                OR ${a_test_file} MATCHES "/snippets/.*/cpp")
+                OR ${a_test_file} MATCHES "/snippets/.*/cpp"
+                OR ${a_test_file} MATCHES "/cppzerocostconf23/.*/cpp)
             add_custom_command(
               OUTPUT ${a_problem_dir}/main.cpp
               DEPENDS ${test_target} gen-cses-main

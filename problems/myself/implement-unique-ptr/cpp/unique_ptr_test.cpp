@@ -62,7 +62,7 @@ TEST(UniquePtrMoveCtorTest, RawPtrIsExchanged) {
 }
 
 TEST(UniquePtrMoveAssignmentTest, WhenPointeesAreDifferent) {
-  int delete_count_old = 0, delete_count_new;
+  int delete_count_old = 0, delete_count_new = 0;
   auto *mock_old = new PointeeMock(&delete_count_old);
   auto *mock_new = new PointeeMock(&delete_count_new);
   unique_ptr<PointeeMock> ptr_old(mock_old);

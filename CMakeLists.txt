@@ -66,7 +66,8 @@ foreach(a_problem_dir ${problem_dirs})
         # For problems from Antti Laaksonens book also generate main file
         # XXX: this assumes that solution is contained in a "solution.hpp" file
         # which is not enforced anywhere.
-        if(${a_test_file} MATCHES "/laaks/.*/cpp")
+        if(${a_test_file} MATCHES "/laaks/.*/cpp"
+                OR ${a_test_file} MATCHES "/snippets/.*/cpp")
             add_custom_command(
               OUTPUT ${a_problem_dir}/main.cpp
               DEPENDS ${test_target} gen-cses-main

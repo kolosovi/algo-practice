@@ -68,7 +68,7 @@ foreach(a_problem_dir ${problem_dirs})
         # which is not enforced anywhere.
         if(${a_test_file} MATCHES "/laaks/.*/cpp"
                 OR ${a_test_file} MATCHES "/snippets/.*/cpp"
-                OR ${a_test_file} MATCHES "/cppzerocostconf23/.*/cpp)
+                OR ${a_test_file} MATCHES "/cppzerocostconf23/.*/cpp")
             add_custom_command(
               OUTPUT ${a_problem_dir}/main.cpp
               DEPENDS ${test_target} gen-cses-main

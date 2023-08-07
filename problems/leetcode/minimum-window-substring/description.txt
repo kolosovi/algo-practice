@@ -1,0 +1,19 @@
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+
+
+ABC
+
+AAAAADDDDBC
+
+AXXXXXBXXCXE
+
+0. left & right pointer point at the 0th index
+1. move right pointer until all characters have occurred >= their frequency in `t`. Save left & right pointer if needed.
+
+ADOBECODEBANC
+
+ADOBEC
+ DOBEC
+ DOBECODEB
